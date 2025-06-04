@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodTracker - Your Daily Mood Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active">
+        <div class="container">
+            <div class="welcome-content">
+                <div class="hero-section">
+                    <h1 class="hero-title">🌟 MoodTracker</h1>
+                    <p class="hero-subtitle">Turn your daily mood tracking into an engaging game</p>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <span class="feature-icon">📊</span>
+                            <h3>Track Progress</h3>
+                            <p>Visualize your emotional journey</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🏆</span>
+                            <h3>Earn Rewards</h3>
+                            <p>Unlock achievements and badges</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🔥</span>
+                            <h3>Build Streaks</h3>
+                            <p>Maintain consistency for bonus points</p>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary btn--lg" id="start-tracking">Start Tracking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="screen">
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="container">
+                <div class="nav-content">
+                    <h2 class="nav-title">MoodTracker</h2>
+                    <div class="nav-tabs">
+                        <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+                        <button class="nav-tab" data-tab="checkin">Check-in</button>
+                        <button class="nav-tab" data-tab="calendar">Calendar</button>
+                        <button class="nav-tab" data-tab="achievements">Achievements</button>
+                        <button class="nav-tab" data-tab="stats">Stats</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content active">
+            <div class="container">
+                <div class="dashboard-grid">
+                    <!-- User Stats Card -->
+                    <div class="card stats-card">
+                        <div class="card__body">
+                            <h3>Your Progress</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="current-level">1</span>
+                                    <span class="stat-label">Level</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value" id="total-points">0</span>
+                                    <span class="stat-label">Points</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value" id="current-streak">0</span>
+                                    <span class="stat-label">Streak</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value" id="total-checkins">0</span>
+                                    <span class="stat-label">Check-ins</span>
+                                </div>
+                            </div>
+                            <div class="progress-section">
+                                <h4>Level Progress</h4>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="level-progress"></div>
+                                </div>
+                                <span class="progress-text" id="level-progress-text">0/50 points to next level</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Today's Mood Card -->
+                    <div class="card mood-card">
+                        <div class="card__body">
+                            <h3>Today's Mood</h3>
+                            <div id="today-mood" class="today-mood-display">
+                                <span class="mood-emoji">🤔</span>
+                                <p>Haven't checked in today</p>
+                                <button class="btn btn--primary" id="quick-checkin">Check In Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Achievements -->
+                    <div class="card achievements-preview">
+                        <div class="card__body">
+                            <h3>Recent Achievements</h3>
+                            <div id="recent-achievements" class="achievement-list">
+                                <p class="empty-state">Complete your first check-in to start earning achievements!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mood Garden -->
+                    <div class="card mood-garden">
+                        <div class="card__body">
+                            <h3>Your Mood Garden</h3>
+                            <div class="garden-container">
+                                <canvas id="garden-canvas" width="300" height="200"></canvas>
+                                <p class="garden-text">Your garden grows with positive moods!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Check-in Tab -->
+        <div id="checkin-tab" class="tab-content">
+            <div class="container">
+                <div class="checkin-container">
+                    <div class="card checkin-card">
+                        <div class="card__body">
+                            <h2>How are you feeling today?</h2>
+                            <p class="checkin-subtitle">Select your current mood</p>
+                            
+                            <div class="mood-selection" id="mood-selection">
+                                <!-- Mood buttons will be generated by JS -->
+                            </div>
+
+                            <div class="notes-section">
+                                <label for="mood-notes" class="form-label">Add a note (optional)</label>
+                                <textarea id="mood-notes" class="form-control" rows="3" placeholder="How was your day? What made you feel this way?"></textarea>
+                            </div>
+
+                            <button class="btn btn--primary btn--full-width" id="submit-checkin" disabled>Submit Check-in</button>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <h4>💡 Daily Tip</h4>
+                        <p id="daily-tip">Remember that all emotions are valid and temporary</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Tab -->
+        <div id="calendar-tab" class="tab-content">
+            <div class="container">
+                <div class="card calendar-card">
+                    <div class="card__body">
+                        <div class="calendar-header">
+                            <h2>Mood Calendar</h2>
+                            <div class="calendar-nav">
+                                <button class="btn btn--secondary" id="prev-month">←</button>
+                                <span id="current-month-year">June 2025</span>
+                                <button class="btn btn--secondary" id="next-month">→</button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid">
+                            <!-- Calendar will be generated by JS -->
+                        </div>
+                        <div class="calendar-legend">
+                            <h4>Mood Legend</h4>
+                            <div class="legend-items" id="mood-legend">
+                                <!-- Legend will be generated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Tab -->
+        <div id="achievements-tab" class="tab-content">
+            <div class="container">
+                <div class="card achievements-card">
+                    <div class="card__body">
+                        <h2>Achievements</h2>
+                        <div class="achievements-grid" id="achievements-grid">
+                            <!-- Achievements will be generated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card challenges-card">
+                    <div class="card__body">
+                        <h3>Weekly Challenges</h3>
+                        <div class="challenges-list" id="challenges-list">
+                            <!-- Challenges will be generated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="stats-tab" class="tab-content">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Mood Distribution</h3>
+                            <canvas id="mood-chart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Weekly Trends</h3>
+                            <canvas id="trend-chart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card insights-card">
+                        <div class="card__body">
+                            <h3>Insights</h3>
+                            <div id="mood-insights">
+                                <!-- Insights will be generated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Achievement Modal -->
+    <div id="achievement-modal" class="modal">
+        <div class="modal-content">
+            <div class="achievement-celebration">
+                <div class="celebration-icon" id="celebration-icon">🎉</div>
+                <h2>Achievement Unlocked!</h2>
+                <div class="achievement-details">
+                    <span class="achievement-badge" id="modal-achievement-icon">🏆</span>
+                    <h3 id="modal-achievement-name">Achievement Name</h3>
+                    <p id="modal-achievement-description">Achievement description</p>
+                    <div class="points-earned">
+                        +<span id="modal-achievement-points">0</span> points
+                    </div>
+                </div>
+                <button class="btn btn--primary" id="close-achievement">Awesome!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
